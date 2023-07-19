@@ -54,15 +54,15 @@ void move_trailer(struct trailer *t) {
         int turn_dir = ((double) (random_choice) / 2 - 0.25) * 4;
         t->dir = turn(t->dir, turn_dir);
     }
-    if (t->dir.x == 0)
-        mvaddch(t->pos.x, t->pos.y, ACS_HLINE);
-    else
-        mvaddch(t->pos.x, t->pos.y, ACS_VLINE);
     if (t->prev_dir.x != t->dir.x && t->prev_dir.x != -t->dir.x) {
         //set the previous character to the appropriate corner piece
         struct vec sussy_diff = vec_diff(t->prev_dir, t->dir);
         mvaddch(t->pos.x, t->pos.y, box_draws[1 + sussy_diff.x][1 + sussy_diff.y]);
     }
+    else if (t->dir.x == 0)
+        mvaddch(t->pos.x, t->pos.y, ACS_HLINE);
+    else
+        mvaddch(t->pos.x, t->pos.y, ACS_VLINE);
     t->prev_dir = t->dir;
  
     t->pos = vec_add(t->pos, t->dir);
