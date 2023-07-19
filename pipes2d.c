@@ -135,6 +135,7 @@ int main() {
             cur_ticks = 0;
         }
     }
+    //TODO: make sure this code runs even if we exit unexpectedly
     curs_set(prev_curs);
     endwin();
     return EXIT_SUCCESS;
