@@ -44,11 +44,11 @@ struct trailer {
 bool term_has_colors; //GLOBAL
 int max_x, max_y; //GLOBAL
 void move_trailer(struct trailer *t) {
-    wchar_t box_draws[3][3] =
+    wchar_t* box_draws[3][3] =
     {
-        {ACS_ULCORNER, ACS_BLOCK, ACS_URCORNER},
-        {ACS_BLOCK,    ACS_BLOCK, ACS_BLOCK},
-        {ACS_LLCORNER, ACS_BLOCK, ACS_LRCORNER},
+        {L"┏", L"█", L"┓"},
+        {L"█", L"█", L"█"},
+        {L"┗", L"█", L"┛"},
     };
     int random_choice = rand() % 100;
     if (random_choice > 90){
@@ -62,12 +62,12 @@ void move_trailer(struct trailer *t) {
     if (t->prev_dir.x != t->dir.x && t->prev_dir.x != -t->dir.x) {
         //set the previous character to the appropriate corner piece
         struct vec sussy_diff = vec_diff(t->prev_dir, t->dir);
-        mvaddch(t->pos.x, t->pos.y, box_draws[1 + sussy_diff.x][1 + sussy_diff.y]);
+        mvaddwstr(t->pos.x, t->pos.y, box_draws[1 + sussy_diff.x][1 + sussy_diff.y]);
     }
     else if (t->dir.x == 0)
-        mvaddch(t->pos.x, t->pos.y, ACS_HLINE);
+        mvaddwstr(t->pos.x, t->pos.y, L"━");
     else
-        mvaddch(t->pos.x, t->pos.y, ACS_VLINE);
+        mvaddwstr(t->pos.x, t->pos.y, L"┃");
     t->prev_dir = t->dir;
      if (term_has_colors) {
         attroff(COLOR_PAIR(t->color_pair_idx));
