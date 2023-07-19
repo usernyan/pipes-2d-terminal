@@ -139,20 +139,20 @@ int main() {
     srand(12);
     getmaxyx(W, max_x, max_y);
     //clear time is the amount of time needed for all snakes to cumulatively travel the entire area of the screen
-    int clear_ticks = max_x * max_y / num_trailers;
     int cur_ticks = 0;
     while(true) {
-        refresh();
         getmaxyx(W, max_x, max_y);
-        for (size_t i = 0; i < num_trailers; i++) {
-            move_trailer(&all_trailers[i]);
-        }
-        napms(50); // wait
         cur_ticks++;
+        int clear_ticks = max_x * max_y / num_trailers;
         if (cur_ticks >= clear_ticks) {
             clear();
             cur_ticks = 0;
         }
+        for (size_t i = 0; i < num_trailers; i++) {
+            move_trailer(&all_trailers[i]);
+        }
+        refresh();
+        napms(50); // wait
     }
     //TODO: make sure this code runs even if we exit unexpectedly
     curs_set(prev_curs);
