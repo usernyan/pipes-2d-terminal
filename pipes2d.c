@@ -133,7 +133,7 @@ int main() {
         t->dir = (struct vec){0, 1};
         t->prev_dir = t->dir;
         t->color_pair_idx = i % num_col_pairs + 1;
-        t->layout = &double_lines;
+        t->layout = &bold_lines;
     }
     srand(12);
     getmaxyx(W, max_x, max_y);
