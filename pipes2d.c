@@ -119,6 +119,9 @@ int main() {
         t->color_pair_idx = i % num_col_pairs + 1;
     }
     srand(12);
+    getmaxyx(W, max_x, max_y);
+    int clear_ticks = ((max_x + max_y) / 2) * 20;
+    int cur_ticks = 0;
     while(true) {
         refresh();
         getmaxyx(W, max_x, max_y);
@@ -126,6 +129,11 @@ int main() {
             move_trailer(&all_trailers[i]);
         }
         napms(50); // wait
+        cur_ticks++;
+        if (cur_ticks >= clear_ticks) {
+            clear();
+            cur_ticks = 0;
+        }
     }
     curs_set(prev_curs);
     endwin();
