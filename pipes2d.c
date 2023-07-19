@@ -91,6 +91,7 @@ int main() {
     int num_col_pairs = 5;
     if (term_has_colors) {
         start_color();
+        //TODO: this should make black colors pairs leave a transparent bg, but it isn't. figure out why
         use_default_colors();
         init_pair(1, COLOR_WHITE, COLOR_BLACK);
         init_pair(2, COLOR_CYAN, COLOR_BLACK);
