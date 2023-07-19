@@ -126,8 +126,9 @@ int main() {
         fprintf(stderr, "%s", "Your terminal doesn't support invisible cursors!");
     }
    
-    struct trailer all_trailers[5];
-    for (size_t i = 0; i < sizeof(all_trailers) / sizeof(struct trailer); i++) {
+    int num_trailers = 5;
+    struct trailer all_trailers[num_trailers];
+    for (size_t i = 0; i < num_trailers; i++) {
         struct trailer *t = &all_trailers[i];
         t->pos = (struct vec){0, 0};
         t->dir = (struct vec){0, 1};
@@ -137,12 +138,13 @@ int main() {
     }
     srand(12);
     getmaxyx(W, max_x, max_y);
-    int clear_ticks = ((max_x + max_y) / 2) * 20;
+    //clear time is the amount of time needed for all snakes to cumulatively travel the entire area of the screen
+    int clear_ticks = max_x * max_y / num_trailers;
     int cur_ticks = 0;
     while(true) {
         refresh();
         getmaxyx(W, max_x, max_y);
-        for (size_t i = 0; i < sizeof(all_trailers) / sizeof(struct trailer); i++) {
+        for (size_t i = 0; i < num_trailers; i++) {
             move_trailer(&all_trailers[i]);
         }
         napms(50); // wait
