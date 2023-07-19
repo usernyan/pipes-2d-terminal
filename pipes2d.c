@@ -34,11 +34,32 @@ struct vec turn(struct vec cur_dir, int turn_dir) {
     return cur_dir;
 }
 
+struct line_layout {
+    wchar_t* strings_box[3][3];
+};
+
+struct line_layout bold_lines = {
+    {
+        {L"┏", L"━", L"┓"},
+        {L"┃", L"█", L"┃"},
+        {L"┗", L"━", L"┛"},
+    }
+};
+
+struct line_layout double_lines = {
+    {
+        {L"╔", L"═", L"╗"},
+        {L"║", L"▒", L"║"},
+        {L"╚", L"═", L"╝"},
+    }
+};
+
 struct trailer {
     struct vec pos;
     struct vec dir;
     struct vec prev_dir;
     int color_pair_idx;
+    struct line_layout *layout;
 };
 
 bool term_has_colors; //GLOBAL
@@ -62,12 +83,12 @@ void move_trailer(struct trailer *t) {
     if (t->prev_dir.x != t->dir.x && t->prev_dir.x != -t->dir.x) {
         //set the previous character to the appropriate corner piece
         struct vec sussy_diff = vec_diff(t->prev_dir, t->dir);
-        mvaddwstr(t->pos.x, t->pos.y, box_draws[1 + sussy_diff.x][1 + sussy_diff.y]);
+        mvaddwstr(t->pos.x, t->pos.y, t->layout->strings_box[1 + sussy_diff.x][1 + sussy_diff.y]);
     }
     else if (t->dir.x == 0)
-        mvaddwstr(t->pos.x, t->pos.y, L"━");
+        mvaddwstr(t->pos.x, t->pos.y, t->layout->strings_box[0][1]);
     else
-        mvaddwstr(t->pos.x, t->pos.y, L"┃");
+        mvaddwstr(t->pos.x, t->pos.y, t->layout->strings_box[1][0]);
     t->prev_dir = t->dir;
      if (term_has_colors) {
         attroff(COLOR_PAIR(t->color_pair_idx));
@@ -117,6 +138,7 @@ int main() {
         t->dir = (struct vec){0, 1};
         t->prev_dir = t->dir;
         t->color_pair_idx = i % num_col_pairs + 1;
+        t->layout = &double_lines;
     }
     srand(12);
     getmaxyx(W, max_x, max_y);
