@@ -65,12 +65,6 @@ struct trailer {
 bool term_has_colors; //GLOBAL
 int max_x, max_y; //GLOBAL
 void move_trailer(struct trailer *t) {
-    wchar_t* box_draws[3][3] =
-    {
-        {L"┏", L"█", L"┓"},
-        {L"█", L"█", L"█"},
-        {L"┗", L"█", L"┛"},
-    };
     int random_choice = rand() % 100;
     if (random_choice > 90){
         random_choice = rand() % 2;
