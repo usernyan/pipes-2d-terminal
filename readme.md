@@ -1,6 +1,6 @@
 # pipes-2D
 
-Pipes 2D is a 2D terminal-based imitation of windows' 3D pipes screensaver.
+Pipes 2D is a 2D terminal-based imitation of windows' 3D pipes screensaver made with ncurses.
 
 ![pipes working its magic](https://github.com/usernyan/pipes-2d-terminal/blob/master/recorded_pipes.gif?raw=true)
 
