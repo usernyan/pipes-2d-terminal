@@ -99,6 +99,7 @@ void move_trailer(struct trailer *t) {
     t->pos.y = t->pos.y % max_y;
 }
 
+//TODO: Make the count, color, and character set of pipes controllable through command-line arguments
 int main() {
     setlocale(LC_CTYPE, "");
     WINDOW *W = initscr();
