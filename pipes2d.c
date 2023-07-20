@@ -99,6 +99,13 @@ void move_trailer(struct trailer *t) {
     t->pos.y = t->pos.y % max_y;
 }
 
+int max(int a, int b) {
+    if (a > b)
+        return a;
+    else
+        return b;
+}
+
 //TODO: Make the count, color, and character set of pipes controllable through command-line arguments
 int main() {
     setlocale(LC_CTYPE, "");
@@ -140,10 +147,12 @@ int main() {
     getmaxyx(W, max_x, max_y);
     //clear time is the amount of time needed for all snakes to cumulatively travel the entire area of the screen
     int cur_ticks = 0;
+    int ticks_min = 100;
     while(true) {
         getmaxyx(W, max_x, max_y);
         cur_ticks++;
         int clear_ticks = max_x * max_y / num_trailers;
+        clear_ticks = max(clear_ticks, ticks_min);
         if (cur_ticks >= clear_ticks) {
             clear();
             cur_ticks = 0;
