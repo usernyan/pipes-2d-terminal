@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <wchar.h>
 #include <locale.h>
+#include <time.h>
 
 struct vec {
     int x;
@@ -143,7 +144,7 @@ int main() {
         t->color_pair_idx = i % num_col_pairs + 1;
         t->layout = &bold_lines;
     }
-    srand(12);
+    srand(time(NULL));
     getmaxyx(W, max_x, max_y);
     //clear time is the amount of time needed for all snakes to cumulatively travel the entire area of the screen
     int cur_ticks = 0;
