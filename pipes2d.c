@@ -121,6 +121,10 @@ int main(int argc, char *argv[]) {
                 usage_exit();
         }
     }
+    int num_pipes = 5;
+    if (optind < argc) {
+        num_pipes = strtol(argv[optind], NULL, 10);
+    }
 
     setlocale(LC_CTYPE, "");
     WINDOW *W = initscr();
@@ -148,7 +152,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "%s", "Your terminal doesn't support invisible cursors!");
     }
    
-    int num_trailers = 5;
+    int num_trailers = num_pipes;
     struct trailer all_trailers[num_trailers];
     for (size_t i = 0; i < num_trailers; i++) {
         struct trailer *t = &all_trailers[i];
