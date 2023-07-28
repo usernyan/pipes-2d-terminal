@@ -5,6 +5,7 @@
 #include <wchar.h>
 #include <locale.h>
 #include <time.h>
+#include <unistd.h>
 
 struct vec {
     int x;
@@ -63,7 +64,8 @@ struct trailer {
     struct line_layout *layout;
 };
 
-bool term_has_colors; //GLOBAL
+bool term_has_colors = false; //GLOBAL
+bool use_colors = true; //GLOBAL
 int max_x, max_y; //GLOBAL
 void move_trailer(struct trailer *t) {
     int random_choice = rand() % 100;
@@ -72,9 +74,8 @@ void move_trailer(struct trailer *t) {
         int turn_dir = ((double) (random_choice) / 2 - 0.25) * 4;
         t->dir = turn(t->dir, turn_dir);
     }
-    if (term_has_colors) {
+    if (use_colors)
         attron(COLOR_PAIR(t->color_pair_idx));
-    }
     if (t->prev_dir.x != t->dir.x && t->prev_dir.x != -t->dir.x) {
         //set the previous character to the appropriate corner piece
         struct vec sussy_diff = vec_diff(t->prev_dir, t->dir);
@@ -85,17 +86,14 @@ void move_trailer(struct trailer *t) {
     else
         mvaddwstr(t->pos.x, t->pos.y, t->layout->strings_box[1][0]);
     t->prev_dir = t->dir;
-     if (term_has_colors) {
+     if (use_colors)
         attroff(COLOR_PAIR(t->color_pair_idx));
-    }
 
     t->pos = vec_add(t->pos, t->dir);
-    if (t->pos.x < 0) {
+    if (t->pos.x < 0)
         t->pos.x = max_x - 1;
-    }
-    if (t->pos.y < 0) {
+    if (t->pos.y < 0)
         t->pos.y = max_y - 1;
-    }
     t->pos.x = t->pos.x % max_x;
     t->pos.y = t->pos.y % max_y;
 }
@@ -107,13 +105,29 @@ int max(int a, int b) {
         return b;
 }
 
+void usage_exit() {
+    fprintf(stderr, "Usage: %s [-n] [number of pipes]");
+    exit(EXIT_FAILURE);
+}
+
 //TODO: Make the count, color, and character set of pipes controllable through command-line arguments
-int main() {
+int main(int argc, char *argv[]) {
+    //argument parsing
+    int opt;
+    while ((opt = getopt(argc, argv, "n")) != -1) {
+        switch (opt) {
+            case 'n': use_colors = false; break;
+            default:
+                usage_exit();
+        }
+    }
+
     setlocale(LC_CTYPE, "");
     WINDOW *W = initscr();
     term_has_colors = has_colors();
+    use_colors = use_colors && term_has_colors;
     int num_col_pairs = 5;
-    if (term_has_colors) {
+    if (use_colors) {
         start_color();
         //TODO: this should make black colors pairs leave a transparent bg, but it isn't. figure out why
         use_default_colors();
