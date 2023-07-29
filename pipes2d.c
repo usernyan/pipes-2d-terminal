@@ -106,7 +106,7 @@ int max(int a, int b) {
 }
 
 void usage_exit() {
-    fprintf(stderr, "Usage: %s [-n] [number of pipes]");
+    fprintf(stderr, "Usage: pipes2d [-n] [number of pipes]");
     exit(EXIT_FAILURE);
 }
 
@@ -121,9 +121,9 @@ int main(int argc, char *argv[]) {
                 usage_exit();
         }
     }
-    int num_pipes = 5;
+    int num_trailers = 5;
     if (optind < argc) {
-        num_pipes = strtol(argv[optind], NULL, 10);
+        num_trailers = strtol(argv[optind], NULL, 10);
     }
 
     setlocale(LC_CTYPE, "");
@@ -152,8 +152,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "%s", "Your terminal doesn't support invisible cursors!");
     }
    
-    int num_trailers = num_pipes;
-    struct trailer all_trailers[num_trailers];
+    struct trailer *all_trailers = malloc(num_trailers * sizeof(struct trailer));
     for (size_t i = 0; i < num_trailers; i++) {
         struct trailer *t = &all_trailers[i];
         t->pos = (struct vec){0, 0};
@@ -170,7 +169,9 @@ int main(int argc, char *argv[]) {
     while(true) {
         getmaxyx(W, max_x, max_y);
         cur_ticks++;
-        int clear_ticks = max_x * max_y / num_trailers;
+        int clear_ticks = ticks_min;
+        if (num_trailers != 0)
+            clear_ticks = max_x * max_y / num_trailers;
         clear_ticks = max(clear_ticks, ticks_min);
         if (cur_ticks >= clear_ticks) {
             clear();
@@ -182,6 +183,7 @@ int main(int argc, char *argv[]) {
         refresh();
         napms(50); // wait
     }
+    free(all_trailers);
     //TODO: make sure this code runs even if we exit unexpectedly
     curs_set(prev_curs);
     endwin();
