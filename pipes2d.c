@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
 
     term_has_colors = has_colors();
     use_colors = use_colors && term_has_colors;
-    int num_col_pairs = 5;
+    int num_col_pairs = 8;
     if (use_colors) {
         start_color();
         //TODO: this should make black colors pairs leave a transparent bg, but it isn't. figure out why
@@ -143,6 +143,9 @@ int main(int argc, char *argv[]) {
         init_pair(3, COLOR_MAGENTA, COLOR_BLACK);
         init_pair(4, COLOR_RED, COLOR_BLACK);
         init_pair(5, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(6, COLOR_GREEN, COLOR_BLACK);
+        init_pair(7, COLOR_RED, COLOR_BLACK);
+        init_pair(8, COLOR_BLUE, COLOR_BLACK);
     }
     cbreak();
     noecho();
