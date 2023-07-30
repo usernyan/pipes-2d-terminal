@@ -172,7 +172,12 @@ int main(int argc, char *argv[]) {
     //clear time is the amount of time needed for all snakes to cumulatively travel the entire area of the screen
     int cur_ticks = 0;
     int ticks_min = 100;
+    wchar_t user_input;
     while(true) {
+        user_input = getch();
+        if (user_input == L'q') {
+            break;
+        }
         getmaxyx(W, max_x, max_y);
         cur_ticks++;
         int clear_ticks = ticks_min;
