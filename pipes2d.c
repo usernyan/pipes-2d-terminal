@@ -160,6 +160,9 @@ int main(int argc, char *argv[]) {
     }
    
     struct trailer *all_trailers = malloc(num_trailers * sizeof(struct trailer));
+    if ( !all_trailers ) {
+        return EXIT_FAILURE;
+    }
     for (size_t i = 0; i < num_trailers; i++) {
         struct trailer *t = &all_trailers[i];
         t->pos = (struct vec){0, 0};
