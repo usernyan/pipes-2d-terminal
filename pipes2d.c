@@ -6,6 +6,7 @@
 #include <locale.h>
 #include <time.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 struct vec {
     int x;
