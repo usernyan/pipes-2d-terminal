@@ -121,13 +121,16 @@ int main(int argc, char *argv[]) {
                 usage_exit();
         }
     }
-    int num_trailers = 5;
+    setlocale(LC_CTYPE, "");
+    WINDOW *W = initscr();
+    getmaxyx(W, max_x, max_y);
+
+    int num_trailers = max_x * max_y / 1000;
+    num_trailers = max(num_trailers, 5);
     if (optind < argc) {
         num_trailers = strtol(argv[optind], NULL, 10);
     }
 
-    setlocale(LC_CTYPE, "");
-    WINDOW *W = initscr();
     term_has_colors = has_colors();
     use_colors = use_colors && term_has_colors;
     int num_col_pairs = 5;
